@@ -1,0 +1,67 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Fruta y Verdura</title>
+    <style>
+        body {
+            margin: 40;
+            display: flex;
+        }
+        .columna-izquierda {
+            width: 30%; 
+            padding: 20px;
+            border: 1px solid black;
+        }
+        .contenido {
+            width: 70%;
+            padding: 20px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="columna-izquierda">
+        <form action="{%url 'agregar_producto' %}" method="POST">
+            {%csrf_token%}
+            <h2><b>Agregar Producto</b></h2>
+            <table>
+                {{ mostrar_formulario.as_table }}
+            </table>
+            <input type="submit" value="Agregar">
+        </form>
+    </div>
+    <div class="contenido">
+        <h1><center>Lista de productos</center></h1>
+        <table border="1" style="width: 100%;">
+            <tr>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+            </tr>
+            <tbody>
+                {%for producto in listado%}
+                    <tr>
+                        <td>{{producto.Nombre}}</td>
+                        <td>{{producto.Precio}}</td>
+                        <td>{{producto.Existencias}}</td>
+                        <td>
+                            <form action="{% url 'eliminar_producto' producto.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit">Borrar</button>
+                            </form>
+                            <form action="{%url 'editar_producto' producto.id%}" method="post">
+                                {%csrf_token%}
+                                <button type="submit">Editar</button>
+                            </form>
+                        </td>
+                    </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+        
+    </div>
+    
+</body>
+</html>
